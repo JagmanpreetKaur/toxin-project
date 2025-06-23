@@ -8,28 +8,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
 
 const industryData = [
-  { industry: 'Steel Manufacturing', companies: 8, avgAQI: 156, status: 'moderate' },
-  { industry: 'Power Generation', companies: 4, avgAQI: 198, status: 'dangerous' },
-  { industry: 'Metal Processing', companies: 6, avgAQI: 134, status: 'moderate' },
-  { industry: 'Chemical Processing', companies: 3, avgAQI: 210, status: 'dangerous' },
-  { industry: 'Mining & Processing', companies: 2, avgAQI: 145, status: 'moderate' }
+  { industry: 'Steel Manufacturing', companies: 2, avgAQI: 156, status: 'moderate' },
+  { industry: 'Power Generation', companies: 2, avgAQI: 198, status: 'dangerous' },
+  { industry: 'Metal Processing', companies: 1, avgAQI: 134, status: 'moderate' },
+  { industry: 'Wire & Cable Manufacturing', companies: 1, avgAQI: 89, status: 'safe' },
+  { industry: 'Water Treatment', companies: 2, avgAQI: 85, status: 'safe' },
+  { industry: 'Mining & Processing', companies: 1, avgAQI: 145, status: 'moderate' },
+  { industry: 'Mixed Industries', companies: 1, avgAQI: 167, status: 'dangerous' }
 ];
 
 const topPolluters = [
   { name: 'JUSCO Power Plant', aqi: 198, industry: 'Power Generation', status: 'dangerous' },
-  { name: 'Chemical Complex Ltd', aqi: 210, industry: 'Chemical Processing', status: 'dangerous' },
+  { name: 'Adityapur Industrial Area', aqi: 167, industry: 'Mixed Industries', status: 'dangerous' },
   { name: 'Tata Steel Jamshedpur', aqi: 156, industry: 'Steel Manufacturing', status: 'moderate' },
-  { name: 'Adityapur Industrial', aqi: 167, industry: 'Mixed Industries', status: 'dangerous' },
-  { name: 'Uranium Corporation', aqi: 145, industry: 'Mining & Processing', status: 'moderate' }
+  { name: 'Uranium Corporation of India', aqi: 145, industry: 'Mining & Processing', status: 'moderate' },
+  { name: 'Tinplate Company of India', aqi: 134, industry: 'Metal Processing', status: 'moderate' }
 ];
 
 const complianceData = [
-  { month: 'Jan', steel: 78, power: 45, chemical: 32, mining: 67 },
-  { month: 'Feb', steel: 82, power: 48, chemical: 35, mining: 71 },
-  { month: 'Mar', steel: 76, power: 42, chemical: 31, mining: 68 },
-  { month: 'Apr', steel: 74, power: 44, chemical: 29, mining: 72 },
-  { month: 'May', steel: 79, power: 47, chemical: 33, mining: 74 },
-  { month: 'Jun', steel: 81, power: 49, chemical: 36, mining: 78 }
+  { month: 'Jan', steel: 78, power: 45, water: 85, mining: 67 },
+  { month: 'Feb', steel: 82, power: 48, water: 88, mining: 71 },
+  { month: 'Mar', steel: 76, power: 42, water: 91, mining: 68 },
+  { month: 'Apr', steel: 74, power: 44, water: 89, mining: 72 },
+  { month: 'May', steel: 79, power: 47, water: 92, mining: 74 },
+  { month: 'Jun', steel: 81, power: 49, water: 91, mining: 78 }
 ];
 
 const pollutantTrends = [
@@ -94,7 +96,7 @@ const Analytics = () => {
                 <Building className="w-8 h-8 text-blue-500" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Total Companies</p>
-                  <p className="text-2xl font-bold text-gray-900">60</p>
+                  <p className="text-2xl font-bold text-gray-900">10</p>
                 </div>
               </div>
             </CardContent>
@@ -106,7 +108,7 @@ const Analytics = () => {
                 <AlertTriangle className="w-8 h-8 text-red-500" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">High Risk</p>
-                  <p className="text-2xl font-bold text-red-600">18</p>
+                  <p className="text-2xl font-bold text-red-600">3</p>
                 </div>
               </div>
             </CardContent>
@@ -118,7 +120,7 @@ const Analytics = () => {
                 <TrendingUp className="w-8 h-8 text-green-500" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Avg Compliance</p>
-                  <p className="text-2xl font-bold text-green-600">67%</p>
+                  <p className="text-2xl font-bold text-green-600">72%</p>
                 </div>
               </div>
             </CardContent>
@@ -130,7 +132,7 @@ const Analytics = () => {
                 <Zap className="w-8 h-8 text-yellow-500" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Active Alerts</p>
-                  <p className="text-2xl font-bold text-yellow-600">12</p>
+                  <p className="text-2xl font-bold text-yellow-600">3</p>
                 </div>
               </div>
             </CardContent>
@@ -168,7 +170,7 @@ const Analytics = () => {
                         </div>
                         <div className="text-right">
                           <p className="text-lg font-bold text-red-600">{company.aqi}</p>
-                          <Badge className={statusColors[company.status]} size="sm">
+                          <Badge className={statusColors[company.status]}>
                             {company.status.toUpperCase()}
                           </Badge>
                         </div>
@@ -257,7 +259,7 @@ const Analytics = () => {
                         pollutant.status === 'good' ? statusColors.safe :
                         pollutant.status === 'moderate' ? statusColors.moderate :
                         statusColors.dangerous
-                      } size="sm">
+                      }>
                         {pollutant.status.toUpperCase()}
                       </Badge>
                     </div>
@@ -281,7 +283,7 @@ const Analytics = () => {
                     <Tooltip />
                     <Line type="monotone" dataKey="steel" stroke="#8884d8" strokeWidth={2} name="Steel Manufacturing" />
                     <Line type="monotone" dataKey="power" stroke="#82ca9d" strokeWidth={2} name="Power Generation" />
-                    <Line type="monotone" dataKey="chemical" stroke="#ffc658" strokeWidth={2} name="Chemical Processing" />
+                    <Line type="monotone" dataKey="water" stroke="#ffc658" strokeWidth={2} name="Water Treatment" />
                     <Line type="monotone" dataKey="mining" stroke="#ff7300" strokeWidth={2} name="Mining & Processing" />
                   </LineChart>
                 </ResponsiveContainer>

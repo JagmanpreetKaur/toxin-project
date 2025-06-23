@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import CompanyList from "./pages/CompanyList";
 import CompanyDashboard from "./pages/CompanyDashboard";
 import Analytics from "./pages/Analytics";
+import Alerts from "./pages/Alerts";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,7 +23,7 @@ const App = () => (
           <Route path="/:toxinType/companies" element={<CompanyList />} />
           <Route path="/:toxinType/company/:companyId" element={<CompanyDashboard />} />
           <Route path="/analytics" element={<Analytics />} />
-          <Route path="/alerts" element={<Analytics />} />
+          <Route path="/alerts" element={<Alerts />} />
           <Route path="/reports" element={<Analytics />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

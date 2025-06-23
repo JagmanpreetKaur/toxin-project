@@ -1,233 +1,380 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Wind, Droplets, Mountain, Zap, Moon, Sun, Globe, Search, Menu } from 'lucide-react';
+import { Wind, Droplets, Mountain, Zap, Search, BarChart3, AlertTriangle, FileText, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import LanguageSelector from '@/components/LanguageSelector';
+import ThemeToggle from '@/components/ThemeToggle';
+import SearchModal from '@/components/SearchModal';
 
 const toxinCategories = [
   {
     id: 'air',
-    title: 'Air Toxins',
+    title: 'Air Pollution',
+    hindiTitle: 'वायु प्रदूषण',
+    description: 'Monitor industrial air emissions, PM2.5, NO₂, SO₂, and AQI levels from manufacturing facilities.',
+    hindiDescription: 'विनिर्माण सुविधाओं से औद्योगिक वायु उत्सर्जन, PM2.5, NO₂, SO₂, और AQI स्तर की निगरानी करें।',
     icon: Wind,
-    description: 'Monitor PM2.5, PM10, NO₂, SO₂, CO, O₃, and AQI levels',
     color: 'from-blue-500 to-cyan-500',
-    hoverColor: 'hover:from-blue-600 hover:to-cyan-600',
-    companies: 24,
-    status: 'moderate'
+    companies: 4,
+    bgPattern: 'bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20'
   },
   {
     id: 'water',
-    title: 'Water Toxins',
+    title: 'Water Pollution',
+    hindiTitle: 'जल प्रदूषण',
+    description: 'Track water quality parameters including pH, BOD, COD, and heavy metal contamination.',
+    hindiDescription: 'pH, BOD, COD, और भारी धातु संदूषण सहित जल गुणवत्ता मापदंडों को ट्रैक करें।',
     icon: Droplets,
-    description: 'Track pH, BOD, COD, Arsenic, Lead, Mercury levels',
-    color: 'from-blue-600 to-blue-800',
-    hoverColor: 'hover:from-blue-700 hover:to-blue-900',
-    companies: 18,
-    status: 'safe'
+    color: 'from-cyan-500 to-blue-500',
+    companies: 3,
+    bgPattern: 'bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20'
   },
   {
     id: 'soil',
-    title: 'Soil Toxins',
+    title: 'Soil Contamination',
+    hindiTitle: 'मिट्टी संदूषण',
+    description: 'Monitor soil health, heavy metal contamination, and chemical pollutants in industrial areas.',
+    hindiDescription: 'औद्योगिक क्षेत्रों में मिट्टी के स्वास्थ्य, भारी धातु संदूषण, और रासायनिक प्रदूषकों की निगरानी करें।',
     icon: Mountain,
-    description: 'Analyze pH, Nitrate, Cadmium, Chromium, Zinc content',
-    color: 'from-amber-600 to-orange-600',
-    hoverColor: 'hover:from-amber-700 hover:to-orange-700',
-    companies: 12,
-    status: 'dangerous'
+    color: 'from-amber-500 to-yellow-500',
+    companies: 2,
+    bgPattern: 'bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20'
   },
   {
     id: 'radioactive',
-    title: 'Radioactive',
+    title: 'Radioactive Emissions',
+    hindiTitle: 'रेडियोधर्मी उत्सर्जन',
+    description: 'Track radioactive emissions, alpha, beta, gamma radiation levels from nuclear facilities.',
+    hindiDescription: 'परमाणु सुविधाओं से रेडियोधर्मी उत्सर्जन, अल्फा, बीटा, गामा विकिरण स्तरों को ट्रैक करें।',
     icon: Zap,
-    description: 'Monitor Alpha, Beta, Gamma Radiation, Radon levels',
-    color: 'from-purple-600 to-pink-600',
-    hoverColor: 'hover:from-purple-700 hover:to-pink-700',
-    companies: 6,
-    status: 'safe'
+    color: 'from-purple-500 to-pink-500',
+    companies: 1,
+    bgPattern: 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20'
   }
 ];
 
-const statusColors = {
-  safe: 'bg-green-500',
-  moderate: 'bg-yellow-500',
-  dangerous: 'bg-red-500'
-};
+const quickActions = [
+  {
+    title: 'View Analytics',
+    hindiTitle: 'विश्लेषण देखें',
+    description: 'Comprehensive environmental data analysis',
+    hindiDescription: 'व्यापक पर्यावरणीय डेटा विश्लेषण',
+    icon: BarChart3,
+    link: '/analytics',
+    color: 'text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/20'
+  },
+  {
+    title: 'Active Alerts',
+    hindiTitle: 'सक्रिय अलर्ट',
+    description: 'View companies with pollution violations',
+    hindiDescription: 'प्रदूषण उल्लंघन वाली कंपनियों को देखें',
+    icon: AlertTriangle,
+    link: '/alerts',
+    color: 'text-red-600 bg-red-50 dark:text-red-400 dark:bg-red-900/20'
+  },
+  {
+    title: 'Generate Reports',
+    hindiTitle: 'रिपोर्ट जेनरेट करें',
+    description: 'Download environmental compliance reports',
+    hindiDescription: 'पर्यावरणीय अनुपालन रिपोर्ट डाउनलोड करें',
+    icon: FileText,
+    link: '/analytics',
+    color: 'text-green-600 bg-green-50 dark:text-green-400 dark:bg-green-900/20'
+  }
+];
 
 const Index = () => {
-  const [darkMode, setDarkMode] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [language, setLanguage] = useState('en');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState('10s ago');
+
+  useEffect(() => {
+    // Check for saved theme preference or default to light mode
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark');
+    }
+
+    // Update timer for live data simulation
+    const interval = setInterval(() => {
+      const now = new Date();
+      const seconds = Math.floor(Math.random() * 60) + 1;
+      setLastUpdated(`${seconds}s ago`);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = !isDarkMode;
+    setIsDarkMode(newTheme);
+    
+    if (newTheme) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  };
+
+  const t = (en: string, hi: string) => language === 'hi' ? hi : en;
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-gray-900' : 'bg-gradient-to-br from-gray-50 to-blue-50'}`}>
-      {/* Navigation */}
-      <nav className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900">
+      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      
+      {/* Header */}
+      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b dark:border-gray-700 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
-                  <Wind className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-gray-900 dark:text-white">EcoMonitor</span>
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link to="/" className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center">
+                <Wind className="w-6 h-6 text-white" />
               </div>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="relative hidden md:block">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  type="text"
-                  placeholder="Search companies..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 w-64"
-                />
-              </div>
-              
-              <Button variant="ghost" size="sm">
-                <Globe className="w-4 h-4 mr-2" />
-                EN
-              </Button>
-              
+              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                EcoMonitor
+              </span>
+            </Link>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-4">
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => setDarkMode(!darkMode)}
+                onClick={() => setIsSearchOpen(true)}
+                className="flex items-center space-x-2"
               >
-                {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                <Search className="w-4 h-4" />
+                <span>{t('Search Companies', 'कंपनियों की खोज करें')}</span>
               </Button>
               
-              <Button variant="ghost" size="sm" className="md:hidden">
-                <Menu className="w-4 h-4" />
-              </Button>
+              <ThemeToggle isDark={isDarkMode} onToggle={toggleTheme} />
+              
+              <LanguageSelector 
+                currentLanguage={language} 
+                onLanguageChange={setLanguage} 
+              />
+            </div>
+
+            {/* Mobile Menu Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="md:hidden"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              <Menu className="w-5 h-5" />
+            </Button>
+          </div>
+
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden py-4 border-t dark:border-gray-700">
+              <div className="flex flex-col space-y-3">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setIsSearchOpen(true);
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex items-center space-x-2 justify-start"
+                >
+                  <Search className="w-4 h-4" />
+                  <span>{t('Search Companies', 'कंपनियों की खोज करें')}</span>
+                </Button>
+                
+                <ThemeToggle isDark={isDarkMode} onToggle={toggleTheme} />
+                
+                <LanguageSelector 
+                  currentLanguage={language} 
+                  onLanguageChange={setLanguage} 
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+            {t('Environmental', 'पर्यावरण')}
+            <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              {t(' Monitoring', ' निगरानी')}
+            </span>
+            <br />
+            {t('Dashboard', 'डैशबोर्ड')}
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-3xl mx-auto">
+            {t(
+              'Real-time pollution monitoring and compliance tracking for industrial facilities in Jamshedpur, Jharkhand. Ensuring environmental transparency and accountability.',
+              'जमशेदपुर, झारखंड में औद्योगिक सुविधाओं के लिए वास्तविक समय प्रदूषण निगरानी और अनुपालन ट्रैकिंग। पर्यावरणीय पारदर्शिता और जवाबदेही सुनिश्चित करना।'
+            )}
+          </p>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-gray-900 dark:text-white">10</div>
+              <div className="text-gray-600 dark:text-gray-400">{t('Companies Monitored', 'निगरानी की गई कंपनियां')}</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-red-600">3</div>
+              <div className="text-gray-600 dark:text-gray-400">{t('Active Alerts', 'सक्रिय अलर्ट')}</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-green-600">72%</div>
+              <div className="text-gray-600 dark:text-gray-400">{t('Avg Compliance', 'औसत अनुपालन')}</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600">50+</div>
+              <div className="text-gray-600 dark:text-gray-400">{t('Active Sensors', 'सक्रिय सेंसर')}</div>
             </div>
           </div>
         </div>
-      </nav>
+      </section>
 
-      {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Environmental Pollution
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500">
-              Monitoring Platform
-            </span>
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Real-time monitoring and accountability for industrial environmental compliance. 
-            Track air, water, soil, and radioactive pollution from companies across your region.
-          </p>
-        </div>
+      {/* Toxin Categories */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              {t('Monitor Pollution by Category', 'श्रेणी के अनुसार प्रदूषण की निगरानी करें')}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+              {t(
+                'Select a pollution category to view detailed monitoring data from industrial facilities in Jamshedpur.',
+                'जमशेदपुर में औद्योगिक सुविधाओं से विस्तृत निगरानी डेटा देखने के लिए एक प्रदूषण श्रेणी का चयन करें।'
+              )}
+            </p>
+          </div>
 
-        {/* Statistics */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center shadow-lg">
-            <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">60</div>
-            <div className="text-gray-600 dark:text-gray-300">Companies Monitored</div>
-          </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center shadow-lg">
-            <div className="text-3xl font-bold text-green-600 dark:text-green-400">247</div>
-            <div className="text-gray-600 dark:text-gray-300">Active Sensors</div>
-          </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center shadow-lg">
-            <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">24/7</div>
-            <div className="text-gray-600 dark:text-gray-300">Real-time Monitoring</div>
-          </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 text-center shadow-lg">
-            <div className="text-3xl font-bold text-orange-600 dark:text-orange-400">98%</div>
-            <div className="text-gray-600 dark:text-gray-300">Data Accuracy</div>
-          </div>
-        </div>
-
-        {/* Toxin Categories */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {toxinCategories.map((category) => {
-            const IconComponent = category.icon;
-            return (
-              <Link
-                key={category.id}
-                to={`/${category.id}/companies`}
-                className="group"
-              >
-                <div className={`relative bg-gradient-to-br ${category.color} ${category.hoverColor} rounded-2xl p-8 text-white transform transition-all duration-300 hover:scale-105 hover:shadow-2xl`}>
-                  {/* Status Indicator */}
-                  <div className="absolute top-4 right-4">
-                    <div className={`w-3 h-3 rounded-full ${statusColors[category.status]} animate-pulse`}></div>
-                  </div>
-                  
-                  {/* Icon */}
-                  <div className="mb-6">
-                    <IconComponent className="w-12 h-12 mb-4 group-hover:scale-110 transition-transform duration-300" />
-                  </div>
-                  
-                  {/* Content */}
-                  <h3 className="text-2xl font-bold mb-3">{category.title}</h3>
-                  <p className="text-white/80 mb-6 text-sm leading-relaxed">
-                    {category.description}
-                  </p>
-                  
-                  {/* Stats */}
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <div className="text-2xl font-bold">{category.companies}</div>
-                      <div className="text-white/70 text-sm">Companies</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {toxinCategories.map((category) => {
+              const IconComponent = category.icon;
+              return (
+                <Link
+                  key={category.id}
+                  to={`/${category.id}/companies`}
+                  className="group block"
+                >
+                  <Card className={`${category.bgPattern} dark:bg-gray-800/50 border-0 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden relative`}>
+                    <div className="absolute top-0 right-0 w-32 h-32 opacity-10 dark:opacity-5">
+                      <IconComponent className="w-full h-full" />
                     </div>
-                    <div className="text-right">
-                      <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        category.status === 'safe' ? 'bg-green-500/20 text-green-100' :
-                        category.status === 'moderate' ? 'bg-yellow-500/20 text-yellow-100' :
-                        'bg-red-500/20 text-red-100'
-                      }`}>
-                        {category.status.toUpperCase()}
+                    <CardHeader className="pb-4">
+                      <div className="flex items-center space-x-4 mb-4">
+                        <div className={`w-16 h-16 bg-gradient-to-r ${category.color} rounded-2xl flex items-center justify-center shadow-lg`}>
+                          <IconComponent className="w-8 h-8 text-white" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-2xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                            {language === 'hi' ? category.hindiTitle : category.title}
+                          </CardTitle>
+                          <div className="flex items-center space-x-2 mt-1">
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                              {category.companies} {t('companies', 'कंपनियां')}
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  
-                  {/* Hover Effect */}
-                  <div className="absolute inset-0 bg-white/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* Quick Actions */}
-        <div className="mt-16 bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link to="/analytics" className="flex items-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-lg hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mr-4">
-                <Wind className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <div className="font-semibold text-gray-900 dark:text-white">View Analytics</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Industry comparisons & trends</div>
-              </div>
-            </Link>
-            
-            <Link to="/alerts" className="flex items-center p-4 bg-gradient-to-r from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 rounded-lg hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-red-500 rounded-lg flex items-center justify-center mr-4">
-                <Zap className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <div className="font-semibold text-gray-900 dark:text-white">Active Alerts</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Threshold violations</div>
-              </div>
-            </Link>
-            
-            <Link to="/reports" className="flex items-center p-4 bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 rounded-lg hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center mr-4">
-                <Mountain className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <div className="font-semibold text-gray-900 dark:text-white">Download Reports</div>
-                <div className="text-sm text-gray-600 dark:text-gray-300">Export compliance data</div>
-              </div>
-            </Link>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                        {language === 'hi' ? category.hindiDescription : category.description}
+                      </p>
+                      <div className="mt-6">
+                        <span className="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium group-hover:text-blue-800 dark:group-hover:text-blue-300 transition-colors">
+                          {t('View Companies', 'कंपनियों को देखें')}
+                          <svg className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* Quick Actions */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white/50 dark:bg-gray-800/50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              {t('Quick Actions', 'त्वरित कार्य')}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300">
+              {t('Access key environmental monitoring tools and reports', 'मुख्य पर्यावरणीय निगरानी उपकरण और रिपोर्ट तक पहुंचें')}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {quickActions.map((action) => {
+              const IconComponent = action.icon;
+              return (
+                <Link
+                  key={action.title}
+                  to={action.link}
+                  className="group block"
+                >
+                  <Card className="hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-0 bg-white dark:bg-gray-800">
+                    <CardContent className="p-8 text-center">
+                      <div className={`w-16 h-16 ${action.color} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform`}>
+                        <IconComponent className="w-8 h-8" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        {language === 'hi' ? action.hindiTitle : action.title}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        {language === 'hi' ? action.hindiDescription : action.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 dark:bg-gray-950 text-white py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="flex items-center justify-center space-x-3 mb-6">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center">
+              <Wind className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              EcoMonitor
+            </span>
+          </div>
+          <p className="text-gray-400 mb-4">
+            {t(
+              'Ensuring environmental transparency and corporate accountability in Jamshedpur, Jharkhand.',
+              'जमशेदपुर, झारखंड में पर्यावरणीय पारदर्शिता और कॉर्पोरेट जवाबदेही सुनिश्चित करना।'
+            )}
+          </p>
+          <div className="text-gray-500 text-sm flex items-center justify-center space-x-2">
+            <span>© 2024 EcoMonitor. {t('All rights reserved.', 'सभी अधिकार सुरक्षित।')}</span>
+            <span>•</span>
+            <span>{t('Last Updated', 'अंतिम अपडेट')} {lastUpdated} | NIT Jamshedpur</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
