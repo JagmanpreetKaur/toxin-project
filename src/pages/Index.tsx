@@ -87,7 +87,7 @@ const quickActions = [
 const Index = () => {
   const { t, language } = useLanguage();
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [lastUpdated, setLastUpdated] = useState('10s ago');
+  const [lastUpdated, setLastUpdated] = useState('');
 
   useEffect(() => {
     // Check for saved theme preference or default to light mode
@@ -100,14 +100,16 @@ const Index = () => {
     }
 
     // Update timer for live data simulation
-    const interval = setInterval(() => {
-      const now = new Date();
+    const updateTimer = () => {
       const seconds = Math.floor(Math.random() * 60) + 1;
-      setLastUpdated(`${seconds}s ago`);
-    }, 5000);
+      setLastUpdated(t(`${seconds}s ago`, `${seconds} सेकंड पहले`));
+    };
+
+    updateTimer();
+    const interval = setInterval(updateTimer, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [t]);
 
   const toggleTheme = () => {
     const newTheme = !isDarkMode;

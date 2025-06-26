@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
           )}
         </p>
         <div className="text-gray-500 text-sm flex items-center justify-center space-x-2">
-          <span>© 2024 EcoMonitor. {t('All rights reserved.', 'सभी अधिकार सुरक्षित।')}</span>
+          <span>© 2025 EcoMonitor. {t('All rights reserved.', 'सभी अधिकार सुरक्षित।')}</span>
           <span>•</span>
           <span>{t('Last Updated', 'अंतिम अपडेट')} | NIT Jamshedpur</span>
         </div>
