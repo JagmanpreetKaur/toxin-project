@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Globe, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -28,12 +28,12 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLanguage, on
           <ChevronDown className="w-4 h-4" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-white border shadow-lg">
+      <DropdownMenuContent align="end" className="bg-white dark:bg-gray-800 border shadow-lg z-50">
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
             onClick={() => onLanguageChange(lang.code)}
-            className="flex items-center space-x-3 px-3 py-2 hover:bg-gray-100 cursor-pointer"
+            className="flex items-center space-x-3 px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
           >
             <span className="text-lg">{lang.flag}</span>
             <span>{lang.name}</span>

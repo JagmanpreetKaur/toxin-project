@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { Wind, Droplets, Mountain, Zap, Search, BarChart3, AlertTriangle, FileText, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import LanguageSelector from '@/components/LanguageSelector';
-import ThemeToggle from '@/components/ThemeToggle';
-import SearchModal from '@/components/SearchModal';
+import { useLanguage } from '@/contexts/LanguageContext';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const toxinCategories = [
   {
@@ -85,9 +85,7 @@ const quickActions = [
 ];
 
 const Index = () => {
-  const [language, setLanguage] = useState('en');
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t, language } = useLanguage();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [lastUpdated, setLastUpdated] = useState('10s ago');
 
@@ -124,85 +122,9 @@ const Index = () => {
     }
   };
 
-  const t = (en: string, hi: string) => language === 'hi' ? hi : en;
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-blue-900 dark:to-indigo-900">
-      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-      
-      {/* Header */}
-      <header className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md shadow-sm border-b dark:border-gray-700 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center">
-                <Wind className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                EcoMonitor
-              </span>
-            </Link>
-
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSearchOpen(true)}
-                className="flex items-center space-x-2"
-              >
-                <Search className="w-4 h-4" />
-                <span>{t('Search Companies', 'कंपनियों की खोज करें')}</span>
-              </Button>
-              
-              <ThemeToggle isDark={isDarkMode} onToggle={toggleTheme} />
-              
-              <LanguageSelector 
-                currentLanguage={language} 
-                onLanguageChange={setLanguage} 
-              />
-            </div>
-
-            {/* Mobile Menu Button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              <Menu className="w-5 h-5" />
-            </Button>
-          </div>
-
-          {/* Mobile Menu */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden py-4 border-t dark:border-gray-700">
-              <div className="flex flex-col space-y-3">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setIsSearchOpen(true);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="flex items-center space-x-2 justify-start"
-                >
-                  <Search className="w-4 h-4" />
-                  <span>{t('Search Companies', 'कंपनियों की खोज करें')}</span>
-                </Button>
-                
-                <ThemeToggle isDark={isDarkMode} onToggle={toggleTheme} />
-                
-                <LanguageSelector 
-                  currentLanguage={language} 
-                  onLanguageChange={setLanguage} 
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </header>
+      <Header isDarkMode={isDarkMode} onToggleTheme={toggleTheme} />
 
       {/* Hero Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
@@ -244,8 +166,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Toxin Categories */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
+      {/* Toxin Categories - Minimal spacing */}
+      <section className="py-1 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -351,30 +273,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 dark:bg-gray-950 text-white py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="flex items-center justify-center space-x-3 mb-6">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center">
-              <Wind className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-              EcoMonitor
-            </span>
-          </div>
-          <p className="text-gray-400 mb-4">
-            {t(
-              'Ensuring environmental transparency and corporate accountability in Jamshedpur, Jharkhand.',
-              'जमशेदपुर, झारखंड में पर्यावरणीय पारदर्शिता और कॉर्पोरेट जवाबदेही सुनिश्चित करना।'
-            )}
-          </p>
-          <div className="text-gray-500 text-sm flex items-center justify-center space-x-2">
-            <span>© 2024 EcoMonitor. {t('All rights reserved.', 'सभी अधिकार सुरक्षित।')}</span>
-            <span>•</span>
-            <span>{t('Last Updated', 'अंतिम अपडेट')} {lastUpdated} | NIT Jamshedpur</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
