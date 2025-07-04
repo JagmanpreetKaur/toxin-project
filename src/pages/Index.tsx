@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Wind, Droplets, Mountain, Zap, Search, BarChart3, AlertTriangle, FileText, Menu } from 'lucide-react';
@@ -12,45 +13,12 @@ const toxinCategories = [
     id: 'air',
     title: 'Air Pollution',
     hindiTitle: 'वायु प्रदूषण',
-    description: 'Monitor industrial air emissions, PM2.5, NO₂, SO₂, and AQI levels from manufacturing facilities.',
-    hindiDescription: 'विनिर्माण सुविधाओं से औद्योगिक वायु उत्सर्जन, PM2.5, NO₂, SO₂, और AQI स्तर की निगरानी करें।',
+    description: 'Monitor industrial air emissions, PM2.5, NO₂, SO₂, and AQI levels from manufacturing facilities in Jamshedpur.',
+    hindiDescription: 'जमशेदपुर में विनिर्माण सुविधाओं से औद्योगिक वायु उत्सर्जन, PM2.5, NO₂, SO₂, और AQI स्तर की निगरानी करें।',
     icon: Wind,
     color: 'from-blue-500 to-cyan-500',
     companies: 4,
     bgPattern: 'bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20'
-  },
-  {
-    id: 'water',
-    title: 'Water Pollution',
-    hindiTitle: 'जल प्रदूषण',
-    description: 'Track water quality parameters including pH, BOD, COD, and heavy metal contamination.',
-    hindiDescription: 'pH, BOD, COD, और भारी धातु संदूषण सहित जल गुणवत्ता मापदंडों को ट्रैक करें।',
-    icon: Droplets,
-    color: 'from-cyan-500 to-blue-500',
-    companies: 3,
-    bgPattern: 'bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-900/20 dark:to-blue-900/20'
-  },
-  {
-    id: 'soil',
-    title: 'Soil Contamination',
-    hindiTitle: 'मिट्टी संदूषण',
-    description: 'Monitor soil health, heavy metal contamination, and chemical pollutants in industrial areas.',
-    hindiDescription: 'औद्योगिक क्षेत्रों में मिट्टी के स्वास्थ्य, भारी धातु संदूषण, और रासायनिक प्रदूषकों की निगरानी करें।',
-    icon: Mountain,
-    color: 'from-amber-500 to-yellow-500',
-    companies: 2,
-    bgPattern: 'bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20'
-  },
-  {
-    id: 'radioactive',
-    title: 'Radioactive Emissions',
-    hindiTitle: 'रेडियोधर्मी उत्सर्जन',
-    description: 'Track radioactive emissions, alpha, beta, gamma radiation levels from nuclear facilities.',
-    hindiDescription: 'परमाणु सुविधाओं से रेडियोधर्मी उत्सर्जन, अल्फा, बीटा, गामा विकिरण स्तरों को ट्रैक करें।',
-    icon: Zap,
-    color: 'from-purple-500 to-pink-500',
-    companies: 1,
-    bgPattern: 'bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20'
   }
 ];
 
@@ -149,20 +117,20 @@ const Index = () => {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900 dark:text-white">10</div>
-              <div className="text-gray-600 dark:text-gray-400">{t('Companies Monitored', 'निगरानी की गई कंपनियां')}</div>
+              <div className="text-3xl font-bold text-gray-900 dark:text-white">4</div>
+              <div className="text-gray-600 dark:text-gray-400">{t('Air Pollution Companies', 'वायु प्रदूषण कंपनियां')}</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-red-600">3</div>
-              <div className="text-gray-600 dark:text-gray-400">{t('Active Alerts', 'सक्रिय अलर्ट')}</div>
+              <div className="text-3xl font-bold text-red-600">1</div>
+              <div className="text-gray-600 dark:text-gray-400">{t('Critical Alerts', 'गंभीर अलर्ट')}</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-600">72%</div>
+              <div className="text-3xl font-bold text-green-600">67%</div>
               <div className="text-gray-600 dark:text-gray-400">{t('Avg Compliance', 'औसत अनुपालन')}</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-blue-600">50+</div>
-              <div className="text-gray-600 dark:text-gray-400">{t('Active Sensors', 'सक्रिय सेंसर')}</div>
+              <div className="text-3xl font-bold text-blue-600">20+</div>
+              <div className="text-gray-600 dark:text-gray-400">{t('Air Quality Sensors', 'वायु गुणवत्ता सेंसर')}</div>
             </div>
           </div>
         </div>
@@ -173,17 +141,17 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              {t('Monitor Pollution by Category', 'श्रेणी के अनुसार प्रदूषण की निगरानी करें')}
+              {t('Air Pollution Monitoring', 'वायु प्रदूषण निगरानी')}
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               {t(
-                'Select a pollution category to view detailed monitoring data from industrial facilities in Jamshedpur.',
-                'जमशेदपुर में औद्योगिक सुविधाओं से विस्तृत निगरानी डेटा देखने के लिए एक प्रदूषण श्रेणी का चयन करें।'
+                'Monitor real-time air quality data from industrial facilities across Jamshedpur, Jharkhand.',
+                'जमशेदपुर, झारखंड में औद्योगिक सुविधाओं से वास्तविक समय वायु गुणवत्ता डेटा की निगरानी करें।'
               )}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 gap-8">
             {toxinCategories.map((category) => {
               const IconComponent = category.icon;
               return (

@@ -8,30 +8,26 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
 
 const industryData = [
-  { industry: 'Steel Manufacturing', companies: 2, avgAQI: 156, status: 'moderate' },
-  { industry: 'Power Generation', companies: 2, avgAQI: 198, status: 'dangerous' },
+  { industry: 'Steel Manufacturing', companies: 1, avgAQI: 156, status: 'moderate' },
+  { industry: 'Power Generation', companies: 1, avgAQI: 198, status: 'dangerous' },
   { industry: 'Metal Processing', companies: 1, avgAQI: 134, status: 'moderate' },
-  { industry: 'Wire & Cable Manufacturing', companies: 1, avgAQI: 89, status: 'safe' },
-  { industry: 'Water Treatment', companies: 2, avgAQI: 85, status: 'safe' },
-  { industry: 'Mining & Processing', companies: 1, avgAQI: 145, status: 'moderate' },
-  { industry: 'Mixed Industries', companies: 1, avgAQI: 167, status: 'dangerous' }
+  { industry: 'Wire & Cable Manufacturing', companies: 1, avgAQI: 89, status: 'safe' }
 ];
 
 const topPolluters = [
   { name: 'JUSCO Power Plant', aqi: 198, industry: 'Power Generation', status: 'dangerous' },
-  { name: 'Adityapur Industrial Area', aqi: 167, industry: 'Mixed Industries', status: 'dangerous' },
   { name: 'Tata Steel Jamshedpur', aqi: 156, industry: 'Steel Manufacturing', status: 'moderate' },
-  { name: 'Uranium Corporation of India', aqi: 145, industry: 'Mining & Processing', status: 'moderate' },
-  { name: 'Tinplate Company of India', aqi: 134, industry: 'Metal Processing', status: 'moderate' }
+  { name: 'Tinplate Company of India', aqi: 134, industry: 'Metal Processing', status: 'moderate' },
+  { name: 'Usha Martin Limited', aqi: 89, industry: 'Wire & Cable Manufacturing', status: 'safe' }
 ];
 
 const complianceData = [
-  { month: 'Jan', steel: 78, power: 45, water: 85, mining: 67 },
-  { month: 'Feb', steel: 82, power: 48, water: 88, mining: 71 },
-  { month: 'Mar', steel: 76, power: 42, water: 91, mining: 68 },
-  { month: 'Apr', steel: 74, power: 44, water: 89, mining: 72 },
-  { month: 'May', steel: 79, power: 47, water: 92, mining: 74 },
-  { month: 'Jun', steel: 81, power: 49, water: 91, mining: 78 }
+  { month: 'Jan', steel: 78, power: 45, metal: 68, wire: 85 },
+  { month: 'Feb', steel: 82, power: 48, metal: 72, wire: 88 },
+  { month: 'Mar', steel: 76, power: 42, metal: 71, wire: 91 },
+  { month: 'Apr', steel: 74, power: 44, metal: 68, wire: 87 },
+  { month: 'May', steel: 79, power: 47, metal: 70, wire: 89 },
+  { month: 'Jun', steel: 81, power: 49, metal: 73, wire: 92 }
 ];
 
 const pollutantTrends = [
@@ -43,11 +39,12 @@ const pollutantTrends = [
   { pollutant: 'O₃', value: 67, change: '+7%', status: 'moderate' }
 ];
 
-const toxinDistribution = [
-  { name: 'Air Pollution', value: 45, color: '#8884d8' },
-  { name: 'Water Pollution', value: 28, color: '#82ca9d' },
-  { name: 'Soil Contamination', value: 20, color: '#ffc658' },
-  { name: 'Radioactive', value: 7, color: '#ff7300' }
+const pollutantDistribution = [
+  { name: 'PM2.5', value: 35, color: '#8884d8' },
+  { name: 'PM10', value: 28, color: '#82ca9d' },
+  { name: 'NO₂', value: 20, color: '#ffc658' },
+  { name: 'SO₂', value: 12, color: '#ff7300' },
+  { name: 'CO', value: 5, color: '#00ff00' }
 ];
 
 const statusColors = {
@@ -95,8 +92,8 @@ const Analytics = () => {
               <div className="flex items-center">
                 <Building className="w-8 h-8 text-blue-500" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Total Companies</p>
-                  <p className="text-2xl font-bold text-gray-900">10</p>
+                  <p className="text-sm font-medium text-gray-600">Air Pollution Companies</p>
+                  <p className="text-2xl font-bold text-gray-900">4</p>
                 </div>
               </div>
             </CardContent>
@@ -108,7 +105,7 @@ const Analytics = () => {
                 <AlertTriangle className="w-8 h-8 text-red-500" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">High Risk</p>
-                  <p className="text-2xl font-bold text-red-600">3</p>
+                  <p className="text-2xl font-bold text-red-600">1</p>
                 </div>
               </div>
             </CardContent>
@@ -120,7 +117,7 @@ const Analytics = () => {
                 <TrendingUp className="w-8 h-8 text-green-500" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600">Avg Compliance</p>
-                  <p className="text-2xl font-bold text-green-600">72%</p>
+                  <p className="text-2xl font-bold text-green-600">67%</p>
                 </div>
               </div>
             </CardContent>
@@ -131,8 +128,8 @@ const Analytics = () => {
               <div className="flex items-center">
                 <Zap className="w-8 h-8 text-yellow-500" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-gray-600">Active Alerts</p>
-                  <p className="text-2xl font-bold text-yellow-600">3</p>
+                  <p className="text-sm font-medium text-gray-600">Air Quality Alerts</p>
+                  <p className="text-2xl font-bold text-yellow-600">1</p>
                 </div>
               </div>
             </CardContent>
@@ -183,13 +180,13 @@ const Analytics = () => {
               {/* Toxin Type Distribution */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Pollution Type Distribution</CardTitle>
+                  <CardTitle>Air Pollutant Distribution</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
                     <PieChart>
                       <Pie
-                        data={toxinDistribution}
+                        data={pollutantDistribution}
                         cx="50%"
                         cy="50%"
                         outerRadius={100}
@@ -197,7 +194,7 @@ const Analytics = () => {
                         dataKey="value"
                         label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                       >
-                        {toxinDistribution.map((entry, index) => (
+                        {pollutantDistribution.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                       </Pie>
@@ -283,8 +280,8 @@ const Analytics = () => {
                     <Tooltip />
                     <Line type="monotone" dataKey="steel" stroke="#8884d8" strokeWidth={2} name="Steel Manufacturing" />
                     <Line type="monotone" dataKey="power" stroke="#82ca9d" strokeWidth={2} name="Power Generation" />
-                    <Line type="monotone" dataKey="water" stroke="#ffc658" strokeWidth={2} name="Water Treatment" />
-                    <Line type="monotone" dataKey="mining" stroke="#ff7300" strokeWidth={2} name="Mining & Processing" />
+                    <Line type="monotone" dataKey="metal" stroke="#ffc658" strokeWidth={2} name="Metal Processing" />
+                    <Line type="monotone" dataKey="wire" stroke="#ff7300" strokeWidth={2} name="Wire & Cable Manufacturing" />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>

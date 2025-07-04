@@ -51,86 +51,11 @@ const companyData = {
       lastUpdate: '4 min ago',
       logo: '🔌'
     }
-  ],
-  water: [
-    {
-      id: 'tata-steel-water',
-      name: 'Tata Steel Water Treatment',
-      industry: 'Steel Manufacturing',
-      location: 'Kharkai River, Jamshedpur, Jharkhand',
-      status: 'moderate',
-      pollutants: ['pH: 8.4', 'BOD: 52 mg/L', 'Iron: 1.2 mg/L'],
-      compliance: '63%',
-      lastUpdate: '5 min ago',
-      logo: '🏭'
-    },
-    {
-      id: 'jusco-water',
-      name: 'JUSCO Water Supply',
-      industry: 'Water Treatment',
-      location: 'Dimna Lake, Jamshedpur, Jharkhand',
-      status: 'safe',
-      pollutants: ['pH: 7.2', 'Chlorine: 0.8 mg/L', 'TDS: 245 mg/L'],
-      compliance: '91%',
-      lastUpdate: '2 min ago',
-      logo: '💧'
-    },
-    {
-      id: 'karandih-effluent',
-      name: 'Karandih Industrial Area',
-      industry: 'Industrial Effluent',
-      location: 'Karandih, Jamshedpur, Jharkhand',
-      status: 'dangerous',
-      pollutants: ['pH: 9.1', 'COD: 198 mg/L', 'Heavy Metals: 2.4 mg/L'],
-      compliance: '31%',
-      lastUpdate: '8 min ago',
-      logo: '🏭'
-    }
-  ],
-  soil: [
-    {
-      id: 'adityapur-industrial',
-      name: 'Adityapur Industrial Area',
-      industry: 'Mixed Industries',
-      location: 'Adityapur, Jamshedpur, Jharkhand',
-      status: 'dangerous',
-      pollutants: ['Chromium: 167 mg/kg', 'Lead: 89 mg/kg', 'pH: 4.8'],
-      compliance: '23%',
-      lastUpdate: '15 min ago',
-      logo: '🏭'
-    },
-    {
-      id: 'tatanagar-soil',
-      name: 'Tatanagar Railway Area',
-      industry: 'Transportation Hub',
-      location: 'Tatanagar, Jamshedpur, Jharkhand',
-      status: 'moderate',
-      pollutants: ['PAH: 45 mg/kg', 'Oil & Grease: 78 mg/kg', 'pH: 6.2'],
-      compliance: '56%',
-      lastUpdate: '12 min ago',
-      logo: '🚂'
-    }
-  ],
-  radioactive: [
-    {
-      id: 'uranium-corporation',
-      name: 'Uranium Corporation of India',
-      industry: 'Mining & Processing',
-      location: 'Jaduguda Mine, Jamshedpur, Jharkhand',
-      status: 'moderate',
-      pollutants: ['Alpha: 0.8 Bq/m³', 'Beta: 0.6 Bq/m³', 'Radon: 145 Bq/m³'],
-      compliance: '78%',
-      lastUpdate: '1 min ago',
-      logo: '☢️'
-    }
   ]
 };
 
 const toxinTitles = {
-  air: 'Air Pollution Companies',
-  water: 'Water Pollution Companies',
-  soil: 'Soil Contamination Companies',
-  radioactive: 'Radioactive Emission Companies'
+  air: 'Air Pollution Companies'
 };
 
 const statusConfig = {

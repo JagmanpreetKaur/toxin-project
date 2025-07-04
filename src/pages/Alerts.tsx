@@ -24,42 +24,6 @@ const dangerousCompanies = [
     hindiAlertReason: 'PM10 का स्तर 200 µg/m³ से अधिक',
     status: 'dangerous',
     logo: '⚡'
-  },
-  {
-    id: 'karandih-effluent',
-    name: 'Karandih Industrial Area',
-    hindiName: 'करंडीह औद्योगिक क्षेत्र',
-    industry: 'Industrial Effluent',
-    hindiIndustry: 'औद्योगिक अपशिष्ट',
-    location: 'Karandih, Jamshedpur, Jharkhand',
-    hindiLocation: 'करंडीह, जमशेदपुर, झारखंड',
-    toxinType: 'water',
-    alertLevel: 'High',
-    hindiAlertLevel: 'उच्च',
-    lastAlert: '1 hour ago',
-    hindiLastAlert: '1 घंटे पहले',
-    alertReason: 'COD levels at 198 mg/L, pH at 9.1',
-    hindiAlertReason: 'COD स्तर 198 mg/L पर, pH 9.1 पर',
-    status: 'dangerous',
-    logo: '🏭'
-  },
-  {
-    id: 'adityapur-industrial',
-    name: 'Adityapur Industrial Area',
-    hindiName: 'आदित्यपुर औद्योगिक क्षेत्र',
-    industry: 'Mixed Industries',
-    hindiIndustry: 'मिश्रित उद्योग',
-    location: 'Adityapur, Jamshedpur, Jharkhand',
-    hindiLocation: 'आदित्यपुर, जमशेदपुर, झारखंड',
-    toxinType: 'soil',
-    alertLevel: 'High',
-    hindiAlertLevel: 'उच्च',
-    lastAlert: '3 hours ago',
-    hindiLastAlert: '3 घंटे पहले',
-    alertReason: 'Chromium contamination at 167 mg/kg',
-    hindiAlertReason: 'क्रोमियम संदूषण 167 mg/kg पर',
-    status: 'dangerous',
-    logo: '🏭'
   }
 ];
 
@@ -83,7 +47,7 @@ const Alerts = () => {
               </h1>
             </div>
             <Badge className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 px-3 py-1">
-              {dangerousCompanies.length} {t('Active Alerts', 'सक्रिय अलर्ट')}
+              {dangerousCompanies.length} {t('Air Pollution Alert', 'वायु प्रदूषण अलर्ट')}
             </Badge>
           </div>
         </div>
@@ -98,7 +62,7 @@ const Alerts = () => {
                 <AlertTriangle className="w-8 h-8 text-red-500" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    {t('Critical Alerts', 'गंभीर अलर्ट')}
+                    {t('Critical Air Alerts', 'गंभीर वायु अलर्ट')}
                   </p>
                   <p className="text-2xl font-bold text-red-600">1</p>
                 </div>
@@ -112,9 +76,9 @@ const Alerts = () => {
                 <AlertTriangle className="w-8 h-8 text-yellow-500" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    {t('High Priority', 'उच्च प्राथमिकता')}
+                    {t('Monitoring Stations', 'निगरानी केंद्र')}
                   </p>
-                  <p className="text-2xl font-bold text-yellow-600">2</p>
+                  <p className="text-2xl font-bold text-yellow-600">4</p>
                 </div>
               </div>
             </CardContent>
@@ -126,9 +90,9 @@ const Alerts = () => {
                 <Clock className="w-8 h-8 text-blue-500" />
                 <div className="ml-4">
                   <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                    {t('Last 24 Hours', 'पिछले 24 घंटे')}
+                    {t('Air Quality Index', 'वायु गुणवत्ता सूचकांक')}
                   </p>
-                  <p className="text-2xl font-bold text-blue-600">8</p>
+                  <p className="text-2xl font-bold text-blue-600">156</p>
                 </div>
               </div>
             </CardContent>
@@ -140,7 +104,7 @@ const Alerts = () => {
           <CardHeader>
             <CardTitle className="flex items-center text-gray-900 dark:text-white">
               <AlertTriangle className="w-6 h-6 text-red-500 mr-2" />
-              {t('Companies with Active Alerts', 'सक्रिय अलर्ट वाली कंपनियां')}
+              {t('Air Pollution Companies with Active Alerts', 'सक्रिय अलर्ट वाली वायु प्रदूषण कंपनियां')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -148,7 +112,7 @@ const Alerts = () => {
               {dangerousCompanies.map((company) => (
                 <Link
                   key={company.id}
-                  to={`/${company.toxinType}/company/${company.id}`}
+                  to={`/air/company/${company.id}`}
                   className="block"
                 >
                   <div className="flex items-center justify-between p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors">
@@ -193,7 +157,7 @@ const Alerts = () => {
         <Card className="mt-8 dark:bg-gray-800">
           <CardHeader>
             <CardTitle className="text-gray-900 dark:text-white">
-              {t('Recent Alert Timeline', 'हाल की अलर्ट समयरेखा')}
+              {t('Recent Air Quality Alert Timeline', 'हाल की वायु गुणवत्ता अलर्ट समयरेखा')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -212,32 +176,32 @@ const Alerts = () => {
                   {t('15 min ago', '15 मिनट पहले')}
                 </span>
               </div>
-              <div className="flex items-center space-x-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+              <div className="flex items-center space-x-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                 <div className="flex-1">
                   <p className="font-medium text-gray-900 dark:text-white">
-                    {t('Karandih Industrial - High Alert', 'करंडीह औद्योगिक - उच्च अलर्ट')}
+                    {t('Tata Steel - Moderate Alert', 'टाटा स्टील - मध्यम अलर्ट')}
                   </p>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
-                    {t('Water quality parameters exceeded', 'जल गुणवत्ता मापदंड अधिक')}
+                    {t('PM2.5 levels slightly elevated', 'PM2.5 स्तर थोड़ा बढ़ा हुआ')}
                   </p>
                 </div>
                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {t('1 hour ago', '1 घंटे पहले')}
+                  {t('2 hours ago', '2 घंटे पहले')}
                 </span>
               </div>
-              <div className="flex items-center space-x-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+              <div className="flex items-center space-x-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                 <div className="flex-1">
                   <p className="font-medium text-gray-900 dark:text-white">
-                    {t('Adityapur Industrial - High Alert', 'आदित्यपुर औद्योगिक - उच्च अलर्ट')}
+                    {t('Usha Martin - Good Status', 'उषा मार्टिन - अच्छी स्थिति')}
                   </p>
                   <p className="text-sm text-gray-600 dark:text-gray-300">
-                    {t('Soil contamination detected', 'मिट्टी संदूषण का पता चला')}
+                    {t('All air quality parameters within limits', 'सभी वायु गुणवत्ता मापदंड सीमा के भीतर')}
                   </p>
                 </div>
                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {t('3 hours ago', '3 घंटे पहले')}
+                  {t('4 hours ago', '4 घंटे पहले')}
                 </span>
               </div>
             </div>

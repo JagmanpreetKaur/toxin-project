@@ -34,8 +34,8 @@ const App = () => (
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/:toxinType/companies" element={<CompanyList />} />
-            <Route path="/:toxinType/company/:companyId" element={<CompanyDashboard />} />
+            <Route path="/air/companies" element={<CompanyList />} />
+            <Route path="/air/company/:companyId" element={<CompanyDashboard />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/alerts" element={<Alerts />} />
             <Route path="/reports" element={<Analytics />} />
